@@ -8,7 +8,7 @@ async def test_create_list_and_revoke_cli_token(client, registered_user):
     )
     assert create_response.status_code == 201
     created = create_response.json()
-    assert created["token"].startswith("aap_live_")
+    assert created["token"].startswith("aa_live_")
 
     list_response = await client.get("/api/v1/cli-tokens", headers=auth_header)
     assert list_response.status_code == 200

@@ -16,7 +16,7 @@ class SentEmail:
 
 def _password_reset_text(reset_url: str) -> str:
     return (
-        "We received a request to reset your AAP Control password.\n\n"
+        "We received a request to reset your Agent Approvals password.\n\n"
         f"Reset it here: {reset_url}\n\n"
         "If you did not request this, you can ignore this email."
     )
@@ -34,11 +34,11 @@ def _password_reset_html(reset_url: str) -> str:
             <tr>
               <td style="padding:32px 32px 24px 32px;">
                 <div style="display:inline-flex;align-items:center;gap:8px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;letter-spacing:0.2em;color:#9aa2ae;text-transform:uppercase;">
-                  &#9679;&nbsp;AAP CONTROL
+                  &#9679;&nbsp;AGENT APPROVALS
                 </div>
                 <h1 style="margin:16px 0 8px 0;font-size:20px;line-height:1.3;font-weight:600;color:#16191d;">Reset your password</h1>
                 <p style="margin:0;font-size:14px;line-height:1.6;color:#6b7480;">
-                  We received a request to reset the password for your AAP Control account. Click the button
+                  We received a request to reset the password for your Agent Approvals account. Click the button
                   below to choose a new one.
                 </p>
               </td>
@@ -79,7 +79,7 @@ class MemoryEmailSender:
         self.sent_messages.append(
             SentEmail(
                 to=to_email,
-                subject="Reset your AAP Control password",
+                subject="Reset your Agent Approvals password",
                 body=_password_reset_text(reset_url),
                 html=_password_reset_html(reset_url),
             )
@@ -99,7 +99,7 @@ class SmtpEmailSender:
         message = EmailMessage()
         message["From"] = self.from_address
         message["To"] = to_email
-        message["Subject"] = "Reset your AAP Control password"
+        message["Subject"] = "Reset your Agent Approvals password"
         message.set_content(_password_reset_text(reset_url))
         message.add_alternative(_password_reset_html(reset_url), subtype="html")
 

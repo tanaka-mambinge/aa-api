@@ -51,7 +51,7 @@ async def get_current_user(
     credentials: HTTPAuthorizationCredentials | None = Depends(bearer_scheme),
 ) -> dict[str, Any]:
     settings = get_settings()
-    cookie_token = request.cookies.get("aap_access_token")
+    cookie_token = request.cookies.get("aa_access_token")
     bearer_token = credentials.credentials if credentials is not None else None
     token = cookie_token or bearer_token
     if token is None:

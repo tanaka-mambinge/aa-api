@@ -10,7 +10,7 @@ BASE_DIR = Path(__file__).resolve().parents[2]
 
 class Settings(BaseSettings):
     app_env: str = "dev"
-    app_name: str = "AAP Backend API"
+    app_name: str = "Agent Approvals Backend API"
     api_v1_prefix: str = "/api/v1"
     jwt_secret_key: str = "change-me"
     jwt_algorithm: str = "HS256"
@@ -19,7 +19,7 @@ class Settings(BaseSettings):
     cookie_secure: bool = False
     cookie_samesite: str = "lax"
     mongo_uri: str = "mongodb://localhost:27017"
-    mongo_db: str = "aap_dev"
+    mongo_db: str = "aa_dev"
     mongo_mock: bool = False
     web_push_vapid_private_key: str = ""
     web_push_vapid_public_key: str = ""
@@ -27,7 +27,7 @@ class Settings(BaseSettings):
     mail_transport: str = "smtp"
     mail_host: str = "localhost"
     mail_port: int = 1025
-    mail_from: str = "AAP Control <no-reply@aap.local>"
+    mail_from: str = "Agent Approvals <no-reply@aa.local>"
     web_app_url: str = "http://localhost:3000"
     password_reset_token_expires_minutes: int = 60
 

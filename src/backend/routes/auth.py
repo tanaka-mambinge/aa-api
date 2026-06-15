@@ -20,7 +20,7 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 def apply_auth_cookie(response: Response, token: str) -> None:
     settings = get_settings()
     response.set_cookie(
-        key="aap_access_token",
+        key="aa_access_token",
         value=token,
         httponly=True,
         secure=settings.cookie_secure,
@@ -82,7 +82,7 @@ async def login(
 
 @router.post("/logout", status_code=status.HTTP_200_OK)
 async def logout(response: Response) -> dict[str, bool]:
-    response.delete_cookie(key="aap_access_token", path="/")
+    response.delete_cookie(key="aa_access_token", path="/")
     return {"ok": True}
 
 

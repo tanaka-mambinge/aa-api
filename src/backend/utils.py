@@ -13,5 +13,5 @@ def hash_token(token: str) -> str:
 
 def make_cli_token() -> tuple[str, str]:
     secret = secrets.token_urlsafe(32)
-    token = f"aap_live_{secret}"
+    token = f"aa_live_{secret}"
     return token, token[:12]

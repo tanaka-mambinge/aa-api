@@ -1,7 +1,7 @@
 [project]
 name = "backend"
 version = "0.1.0"
-description = "AAP backend API"
+description = "Agent Approvals backend API"
 readme = "README.md"
 authors = [
     { name = "tanaka-mambinge", email = "tmambinge@mugonat.com" }

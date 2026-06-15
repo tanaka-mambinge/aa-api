@@ -48,7 +48,7 @@ async def test_web_login_sets_cookie_and_uses_me_without_bearer(client):
 
     assert register_response.status_code == 201
     assert register_response.json()["access_token"] is None
-    assert "aap_access_token=" in register_response.headers.get("set-cookie", "")
+    assert "aa_access_token=" in register_response.headers.get("set-cookie", "")
 
     me_response = await client.get("/api/v1/auth/me")
     assert me_response.status_code == 200
