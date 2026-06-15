@@ -1,0 +1,6 @@
+from typing import Protocol
+
+
+class WorkspaceRepository(Protocol):
+    async def create_for_user(self, *, user_id: str, name: str) -> dict: ...
+    async def get_by_id(self, workspace_id: str) -> dict | None: ...
