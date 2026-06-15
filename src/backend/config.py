@@ -21,13 +21,14 @@ class Settings(BaseSettings):
     mongo_uri: str = "mongodb://localhost:27017"
     mongo_db: str = "aa_dev"
     mongo_mock: bool = False
+    mail_transport: str = ""
+    resend_api_key: str = ""
+    mail_from: str = "aa@iamt12e.co.zw"
+    mail_host: str = "localhost"
+    mail_port: int = 1025
     web_push_vapid_private_key: str = ""
     web_push_vapid_public_key: str = ""
     web_push_subject: str = ""
-    mail_transport: str = "smtp"
-    mail_host: str = "localhost"
-    mail_port: int = 1025
-    mail_from: str = "Agent Approvals <no-reply@aa.local>"
     web_app_url: str = "http://localhost:3000"
     password_reset_token_expires_minutes: int = 60
 

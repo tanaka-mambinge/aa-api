@@ -1,7 +1,9 @@
+import json
 from dataclasses import dataclass
 import asyncio
 import smtplib
 from email.message import EmailMessage
+from urllib import error, request
 
 from backend.config import Settings
 
@@ -107,7 +109,66 @@ class SmtpEmailSender:
             smtp.send_message(message)
 
 
+class ResendEmailSender:
+    def __init__(self, settings: Settings):
+        self.api_key = settings.resend_api_key
+        self.from_address = settings.mail_from
+
+    async def send_password_reset(self, *, to_email: str, reset_url: str) -> None:
+        await asyncio.to_thread(self._send_password_reset_sync, to_email, reset_url)
+
+    def _send_password_reset_sync(self, to_email: str, reset_url: str) -> None:
+        if not self.api_key:
+            raise RuntimeError("RESEND_API_KEY is required when MAIL_TRANSPORT=resend")
+
+        payload = json.dumps(
+            {
+                "from": self.from_address,
+                "to": [to_email],
+                "subject": "Reset your Agent Approvals password",
+                "text": _password_reset_text(reset_url),
+                "html": _password_reset_html(reset_url),
+            }
+        ).encode("utf-8")
+
+        req = request.Request(
+            "https://api.resend.com/emails",
+            data=payload,
+            method="POST",
+            headers={
+                "Authorization": f"Bearer {self.api_key}",
+                "Content-Type": "application/json",
+            },
+        )
+
+        try:
+            with request.urlopen(req, timeout=30) as resp:
+                if resp.status >= 400:
+                    raise RuntimeError(f"Resend request failed with status {resp.status}")
+        except error.HTTPError as exc:
+            detail = exc.read().decode("utf-8", errors="replace")
+            raise RuntimeError(
+                f"Resend request failed with status {exc.code}: {detail}"
+            ) from exc
+
+
 def build_email_sender(settings: Settings):
-    if settings.mail_transport == "memory":
+    transport = settings.mail_transport.strip().lower()
+    if not transport:
+        if settings.app_env == "test":
+            transport = "memory"
+        elif settings.app_env == "prod":
+            transport = "resend"
+        else:
+            transport = "smtp"
+
+    if transport == "memory":
         return MemoryEmailSender()
-    return SmtpEmailSender(settings)
+    if transport in {"smtp", "maildev"}:
+        return SmtpEmailSender(settings)
+    if transport == "resend":
+        if not settings.resend_api_key:
+            raise RuntimeError("RESEND_API_KEY is required when MAIL_TRANSPORT=resend")
+        return ResendEmailSender(settings)
+
+    raise RuntimeError(f"Unknown MAIL_TRANSPORT: {settings.mail_transport}")
