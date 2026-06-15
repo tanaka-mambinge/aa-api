@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 
-from mongomock_motor import AsyncMongoMockClient
 from motor.motor_asyncio import AsyncIOMotorClient
 
 from backend.config import Settings
@@ -26,6 +25,8 @@ class RepositoryContainer:
 
 def build_client(settings: Settings):
     if settings.mongo_mock:
+        from mongomock_motor import AsyncMongoMockClient
+
         return AsyncMongoMockClient()
     return AsyncIOMotorClient(settings.mongo_uri)
 
